@@ -1,22 +1,22 @@
 import SwiftUI
 
 struct FilmListView: View {
-    var films: [Film]
+    var movies: [Movie]
     let favoritesViewModel: FavoritesViewModel
 
     var body: some View {
-        List(films) { film in
-            NavigationLink(value: film) {
+        List(movies) { movie in
+            NavigationLink(value: movie.id) {
                 FilmRow(
-                    film: film,
+                    movie: movie,
                     favoritesViewModel: favoritesViewModel
                 )
             }
 
         }
-        .navigationDestination(for: Film.self) { film in
+        .navigationDestination(for: Int.self) { movieID in
             FilmDetailScreen(
-                film: film,
+                movieID: movieID,
                 favoritesViewModel: favoritesViewModel
             )
         }
@@ -24,35 +24,40 @@ struct FilmListView: View {
 }
 
 private struct FilmRow: View {
-    let film: Film
+    let movie: Movie
     let favoritesViewModel: FavoritesViewModel
 
     var body: some View {
         HStack(alignment: .top) {
-            FilmImageView(urlPath: film.image)
+            FilmImageView(urlPath: movie.image ?? "")
                 .frame(
                     width: 100,
                     height: 150
                 )
             VStack(alignment: .leading) {
                 HStack {
-                    Text(film.title).fontWeight(.semibold)
+                    Text(movie.title).fontWeight(.semibold)
                     Spacer()
                     FavoriteButton(
-                        filmID: film.id,
+                        filmID: String(movie.id),
                         favoritesViewModel: favoritesViewModel
                     )
                     .buttonStyle(.plain)
                     .controlSize(.large)
                 }
                 .padding(.bottom, 5)
-                Text("Directed by \(film.director)")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
 
-                Text("Released: \(film.releaseYear)")
-                    .font(.caption)
-                    .foregroundColor(.secondary)
+                if let score = movie.averageScore {
+                    Text("Score: \(score)/100")
+                        .font(.subheadline)
+                        .foregroundColor(.secondary)
+                }
+
+                if let duration = movie.duration {
+                    Text("Duration: \(duration) min")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
             }
             .padding(.top)
         }

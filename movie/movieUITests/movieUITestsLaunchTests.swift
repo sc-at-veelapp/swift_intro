@@ -1,10 +1,3 @@
-//
-//  movieUITestsLaunchTests.swift
-//  movieUITests
-//
-//  Created by Veel local server on 5/8/26.
-//
-
 import XCTest
 
 final class movieUITestsLaunchTests: XCTestCase {

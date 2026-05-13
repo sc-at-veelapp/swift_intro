@@ -9,15 +9,15 @@ struct FilmsScreen: View {
             VStack {
                 switch filmsViewModel.state {
                 case .idle:
-                    Text("No Films yet")
+                    Text("No movies yet")
 
                 case .loading:
                     ProgressView {
                         Text("Loading ...")
                     }
-                case .loaded(let films):
+                case .loaded(let movies):
                     FilmListView(
-                        films: films,
+                        movies: movies,
                         favoritesViewModel: favoritesViewModel
                     )
                 case .error(let error):
@@ -25,7 +25,12 @@ struct FilmsScreen: View {
                         .foregroundStyle(.pink)
                 }
             }
-            .navigationTitle("Ghibli Movies")
+            .navigationTitle("Movies")
+            .task {
+                if case .idle = filmsViewModel.state {
+                    await filmsViewModel.fetch()
+                }
+            }
         }
     }
 }

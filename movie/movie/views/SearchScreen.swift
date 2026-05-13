@@ -1,14 +1,14 @@
 import SwiftUI
 
 struct SearchScreen: View {
-
     @State private var text: String = ""
     @State private var searchViewModel: SearchFilmsViewModel
+
     let favoritesViewModel: FavoritesViewModel
 
     init(
         favoritesViewModel: FavoritesViewModel,
-        service: GhibliService = DefaultGhibliService()
+        service: MovieService = AniListService()
     ) {
         self.favoritesViewModel = favoritesViewModel
         self.searchViewModel = SearchFilmsViewModel(service: service)
@@ -25,9 +25,9 @@ struct SearchScreen: View {
                     ProgressView()
                 case .error(let error):
                     Text(error)
-                case .loaded(let films):
+                case .loaded(let movies):
                     FilmListView(
-                        films: films,
+                        movies: movies,
                         favoritesViewModel: favoritesViewModel
                     )
                 }

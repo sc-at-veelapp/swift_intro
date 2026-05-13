@@ -3,13 +3,14 @@ import Observation
 
 @Observable
 class SearchFilmsViewModel {
-    var state: LoadingState<[Film]> = .idle
+    var state: LoadingState<[Movie]> = .idle
     private var currentSearchTerm: String = ""
 
-    private let service: GhibliService
+    private let service: MovieService
+    private let perPage: Int = 10
 
     init(
-        service: GhibliService = DefaultGhibliService()
+        service: MovieService = AniListService()
     ) {
         self.service = service
     }
@@ -30,8 +31,8 @@ class SearchFilmsViewModel {
         }
 
         do {
-            let films = try await service.searchFilm(for: searchTerm)
-            self.state = .loaded(films)
+            let movies = try await service.searchFilm(for: searchTerm, page: 1, perPage: perPage)
+            self.state = .loaded(movies)
         } catch {
             setError(error, for: searchTerm)
         }

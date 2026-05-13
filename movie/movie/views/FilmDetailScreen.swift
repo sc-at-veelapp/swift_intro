@@ -1,63 +1,97 @@
 import SwiftUI
 
 struct FilmDetailScreen: View {
-    let film: Film
+    let movieID: Int
     let favoritesViewModel: FavoritesViewModel
 
     @State private var viewModel = FilmDetailViewModel()
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: 0) {
-                FilmImageView(urlPath: film.bannerImage)
-                    .frame(height: 300)
-                    .frame(maxWidth: .infinity)
-                    .clipped()
-                    .containerRelativeFrame(.horizontal)
-                    .ignoresSafeArea(edges: .top)
-                    .stretchy()
+        ZStack {
+            ScrollView {
+                VStack(spacing: 0) {
+                    if case .loaded(let movie) = viewModel.state {
+                        FilmImageView(urlPath: movie.image ?? "")
+                            .frame(height: 300)
+                            .frame(maxWidth: .infinity)
+                            .clipped()
+                            .containerRelativeFrame(.horizontal)
+                            .ignoresSafeArea(edges: .top)
+                            .stretchy()
 
-                VStack(
-                    alignment: .leading,
-                    spacing: 10
-                ) {
-                    Text(film.title)
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                    Grid(alignment: .leading) {
-                        InfoRow(label: "Director", value: film.director)
-                        InfoRow(label: "Producer", value: film.producer)
-                        InfoRow(label: "Release Date", value: film.releaseYear)
-                        InfoRow(
-                            label: "Running Time",
-                            value: "\(film.duration) minutes"
-                        )
-                        InfoRow(label: "Score", value: "\(film.score)/100")
+                        VStack(
+                            alignment: .leading,
+                            spacing: 10
+                        ) {
+                            Text(movie.title)
+                                .font(.largeTitle)
+                                .fontWeight(.bold)
+
+                            Grid(alignment: .leading) {
+                                if let score = movie.averageScore {
+                                    InfoRow(
+                                        label: "Score",
+                                        value: "\(score)/100"
+                                    )
+                                }
+                                if let duration = movie.duration {
+                                    InfoRow(
+                                        label: "Duration",
+                                        value: "\(duration) minutes"
+                                    )
+                                }
+                                if let studios = movie.studios?.joined(
+                                    separator: ", "
+                                ) {
+                                    InfoRow(label: "Studios", value: studios)
+                                }
+                            }
+                            .padding(.vertical, 8)
+
+                            Divider().padding()
+
+                            if let description = movie.description,
+                                !description.isEmpty
+                            {
+                                // TODO: description now has html tags :(.
+                                // look for packages that support rich text to swiftui text view ig
+                                Text("Description")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                Text(description)
+
+                                Divider().padding()
+                            }
+
+                            if let characters = movie.characters,
+                                !characters.isEmpty
+                            {
+                                CharacterSectionView(characters: characters)
+                            }
+                        }
+                        .padding()
+                    } else {
+                        VStack {
+                            if case .error(let error) = viewModel.state {
+                                Text("Error: \(error)")
+                            } else {
+                                ProgressView()
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    .padding(.vertical, 8)
-
-                    Divider().padding()
-
-                    Text("Description")
-                        .font(.title2)
-                        .fontWeight(.semibold)
-                    Text(film.description)
-
-                    Divider().padding()
-
-                    CharacterSectionView(viewModel: viewModel)
                 }
-                .padding()
             }
         }
         .toolbar {
             FavoriteButton(
-                filmID: film.id,
+                filmID: String(movieID),
                 favoritesViewModel: favoritesViewModel
             )
-        }.ignoresSafeArea(edges: .top)
-        .task(id: film) {
-            await viewModel.fetch(for: film)
+        }
+        .ignoresSafeArea(edges: .top)
+        .task(id: movieID) {
+            await viewModel.fetch(for: Int32(movieID))
         }
     }
 }
@@ -75,47 +109,53 @@ private struct InfoRow: View {
 
             Text(value)
                 .font(.subheadline)
-
         }
     }
 }
 
 private struct CharacterSectionView: View {
-    let viewModel: FilmDetailViewModel
+    let characters: [Character]
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 12) {
+        VStack(alignment: .leading, spacing: 10) {
             Text("Characters")
-                .font(.headline)
+                .font(.title2)
                 .fontWeight(.semibold)
 
-            switch viewModel.state {
-            case .idle: EmptyView()
-            case .loading: ProgressView()
-            case .loaded(let people):
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: 12) {
-                        ForEach(people) { person in
-                            VStack(spacing: 8) {
-                                Image(systemName: "photo")
-                                    .frame(width: 60, height: 60)
-                                    .foregroundColor(.gray.opacity(0.3))
-                                    .cornerRadius(150)
+            ForEach(characters) { character in
+                HStack(alignment: .top, spacing: 12) {
+                    if let image = character.image {
+                        FilmImageView(urlPath: image)
+                            .frame(width: 60, height: 80)
+                    }
 
-                                Text(person.name)
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                    .lineLimit(1)
-                                    .frame(width: 80)
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(character.name)
+                            .font(.subheadline)
+                            .fontWeight(.semibold)
+
+                        if let role = character.role {
+                            Text(role)
+                                .font(.caption)
+                                .foregroundColor(.secondary)
+                        }
+
+                        if let voiceActors = character.voiceActors,
+                            !voiceActors.isEmpty
+                        {
+                            VStack(alignment: .leading, spacing: 2) {
+                                ForEach(voiceActors) { actor in
+                                    Text("VA: \(actor.name)")
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
                             }
-                            .padding()
                         }
                     }
-                    .padding(.horizontal)
+
+                    Spacer()
                 }
-            case .error(let error):
-                Text(error)
-                    .foregroundStyle(.pink)
+                .padding(.vertical, 8)
             }
         }
     }

@@ -1,0 +1,22 @@
+query GetAnime($page: Int, $perPage: Int = 10) {
+  Page(page: $page, perPage: $perPage) {
+    pageInfo {
+      total
+      currentPage
+      lastPage
+      hasNextPage
+    }
+    media(type: ANIME, format: MOVIE, sort: POPULARITY_DESC) {
+      id
+      title {
+        english
+      }
+      description
+      averageScore
+      duration
+      coverImage {
+        medium
+      }
+    }
+  }
+}

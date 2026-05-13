@@ -1,20 +1,25 @@
 import SwiftUI
 
 struct Splash: View {
+    @Environment(AppState.self) private var appState
+
     var body: some View {
         ScrollView {
-            VStack(alignment: .center) {
+            VStack {
                 Spacer()
                 TitleView()
                 InformationContainerView()
                 Spacer(minLength: 30)
-                Button(action: {
-                    let generator = UINotificationFeedbackGenerator()
-                    generator.notificationOccurred(.success)
-                }) {
-                    Text("Continue").background()
+                Button {
+                    //let generator = UINotificationFeedbackGenerator()
+                    //generator.notificationOccurred(.success)
+
+                    appState.hasEnteredApp = true
+                } label: {
+                    Text("Continue")
+                        .padding()
                 }
-                .padding(.horizontal)
+                //.padding(.horizontal)
             }
         }
 

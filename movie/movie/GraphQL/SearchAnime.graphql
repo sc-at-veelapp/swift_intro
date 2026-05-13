@@ -1,0 +1,16 @@
+query SearchAnime($search: String, $page: Int = 1, $perPage: Int = 10) {
+  Page(page: $page, perPage: $perPage) {
+    media(search: $search, type: ANIME, format: MOVIE, sort: POPULARITY_DESC) {
+      id
+      title {
+        english
+      }
+      description
+      averageScore
+      duration
+      coverImage {
+        medium
+      }
+    }
+  }
+}

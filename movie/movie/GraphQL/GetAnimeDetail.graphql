@@ -1,0 +1,61 @@
+query GetAnimeDetail($id: Int!) {
+  Media(id: $id, type: ANIME) {
+    id
+    title {
+      romaji
+    }
+    description
+    averageScore
+    duration
+    coverImage {
+      large
+    }
+    studios(isMain: true) {
+      edges {
+        node {
+          id
+          name
+        }
+      }
+    }
+    staff(sort: [RELEVANCE, ID]) {
+      edges {
+        role
+        node {
+          id
+          name {
+            userPreferred
+          }
+          image {
+            large
+          }
+        }
+      }
+    }
+    characters(sort: [ROLE, RELEVANCE, ID], perPage: 6) {
+      edges {
+        id
+        role
+        node {
+          id
+          name {
+            userPreferred
+          }
+          image {
+            large
+          }
+        }
+        voiceActors(language: JAPANESE, sort: [RELEVANCE, ID]) {
+          id
+          name {
+            userPreferred
+          }
+          languageV2
+          image {
+            large
+          }
+        }
+      }
+    }
+  }
+}

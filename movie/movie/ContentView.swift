@@ -14,7 +14,6 @@ struct ContentView: View {
             }
             Tab("Favorites", systemImage: "heart") {
                 FavoritesScreen(
-                    filmsViewModel: filmsViewModel,
                     favoritesViewModel: favoritesViewModel
                 )
             }

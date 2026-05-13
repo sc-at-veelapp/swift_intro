@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		0092F3022FB3142700517692 /* Apollo in Frameworks */ = {isa = PBXBuildFile; productRef = 0092F3012FB3142700517692 /* Apollo */; };
+		0092F3042FB3142E00517692 /* ApolloAPI in Frameworks */ = {isa = PBXBuildFile; productRef = 0092F3032FB3142E00517692 /* ApolloAPI */; };
+		0092F33D2FB31F3600517692 /* AnilistQL in Frameworks */ = {isa = PBXBuildFile; productRef = 0092F33C2FB31F3600517692 /* AnilistQL */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		00A7F3292FAD96F100C51ABD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -52,6 +58,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0092F33D2FB31F3600517692 /* AnilistQL in Frameworks */,
+				0092F3042FB3142E00517692 /* ApolloAPI in Frameworks */,
+				0092F3022FB3142700517692 /* Apollo in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -72,12 +81,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		0092F3002FB3142700517692 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		00A7F3122FAD96EF00C51ABD = {
 			isa = PBXGroup;
 			children = (
 				00A7F31D2FAD96EF00C51ABD /* movie */,
 				00A7F32B2FAD96F100C51ABD /* movieTests */,
 				00A7F3352FAD96F100C51ABD /* movieUITests */,
+				0092F3002FB3142700517692 /* Frameworks */,
 				00A7F31C2FAD96EF00C51ABD /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +129,9 @@
 			);
 			name = movie;
 			packageProductDependencies = (
+				0092F3012FB3142700517692 /* Apollo */,
+				0092F3032FB3142E00517692 /* ApolloAPI */,
+				0092F33C2FB31F3600517692 /* AnilistQL */,
 			);
 			productName = movie;
 			productReference = 00A7F31B2FAD96EF00C51ABD /* movie.app */;
@@ -195,6 +215,10 @@
 			);
 			mainGroup = 00A7F3122FAD96EF00C51ABD;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				00E559A82FB3053300633A91 /* XCRemoteSwiftPackageReference "apollo-ios" */,
+				0092F33B2FB31F3600517692 /* XCLocalSwiftPackageReference "generated/AnilistQL" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 00A7F31C2FAD96EF00C51ABD /* Products */;
 			projectDirPath = "";
@@ -574,6 +598,41 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		0092F33B2FB31F3600517692 /* XCLocalSwiftPackageReference "generated/AnilistQL" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = generated/AnilistQL;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		00E559A82FB3053300633A91 /* XCRemoteSwiftPackageReference "apollo-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/apollographql/apollo-ios";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		0092F3012FB3142700517692 /* Apollo */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 00E559A82FB3053300633A91 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = Apollo;
+		};
+		0092F3032FB3142E00517692 /* ApolloAPI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 00E559A82FB3053300633A91 /* XCRemoteSwiftPackageReference "apollo-ios" */;
+			productName = ApolloAPI;
+		};
+		0092F33C2FB31F3600517692 /* AnilistQL */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = AnilistQL;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 00A7F3132FAD96EF00C51ABD /* Project object */;
 }

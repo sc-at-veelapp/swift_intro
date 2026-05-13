@@ -1,11 +1,5 @@
-//
-//  movieTests.swift
-//  movieTests
-//
-//  Created by Veel local server on 5/8/26.
-//
-
 import Testing
+
 @testable import movie
 
 struct movieTests {

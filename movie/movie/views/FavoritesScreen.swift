@@ -1,37 +1,40 @@
 import SwiftUI
 
 struct FavoritesScreen: View {
-    let filmsViewModel: FilmsViewModel
     let favoritesViewModel: FavoritesViewModel
-
-    var films: [Film] {
-        let favorites = favoritesViewModel.favoriteIDs
-
-        switch filmsViewModel.state {
-        case .loaded(let films):
-            return films.filter {
-                favorites.contains($0.id)
-            }
-        default: return []
-        }
-    }
+    @State private var favoriteMoviesViewModel = FavoriteMoviesViewModel()
 
     var body: some View {
         NavigationStack {
             Group {
-                if films.isEmpty {
+                if favoritesViewModel.favoriteIDs.isEmpty {
                     ContentUnavailableView(
                         "No Favorites yet",
                         systemImage: "heart"
                     )
-                } else {
+                } else if favoriteMoviesViewModel.isLoading {
+                    ProgressView()
+                } else if !favoriteMoviesViewModel.movies.isEmpty {
                     FilmListView(
-                        films: films,
+                        movies: favoriteMoviesViewModel.movies,
                         favoritesViewModel: favoritesViewModel
+                    )
+                } else if let error = favoriteMoviesViewModel.error {
+                    Text("Error loading favorites: \(error)")
+                        .foregroundStyle(.pink)
+                } else {
+                    ContentUnavailableView(
+                        "No Favorites yet",
+                        systemImage: "heart"
                     )
                 }
             }
             .navigationTitle("Favorites")
+            .task(id: favoritesViewModel.favoriteIDs) {
+                await favoriteMoviesViewModel.loadFavorites(
+                    favoriteIDs: favoritesViewModel.favoriteIDs
+                )
+            }
         }
     }
 }
