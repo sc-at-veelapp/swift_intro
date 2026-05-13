@@ -11,9 +11,10 @@ struct FilmListView: View {
                     movie: movie,
                     favoritesViewModel: favoritesViewModel
                 )
-            }
-
+            }.listRowBackground(Color.clear)
         }
+        .scrollContentBackground(.hidden)
+        .background(Color.clear)
         .navigationDestination(for: Int.self) { movieID in
             FilmDetailScreen(
                 movieID: movieID,

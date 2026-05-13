@@ -17,6 +17,11 @@ struct ContentView: View {
                     favoritesViewModel: favoritesViewModel
                 )
             }
+            Tab("Feed", systemImage: "video") {
+               FeedScreen(
+                    // feedViewModel: FeedViewModel()
+               )
+            }
             Tab("Settings", systemImage: "gear") {
                 SettingsScreen()
             }

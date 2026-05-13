@@ -4,25 +4,62 @@ struct Splash: View {
     @Environment(AppState.self) private var appState
 
     var body: some View {
-        ScrollView {
+        ZStack() {
+            MeshGradient(
+                width: 5,
+                height: 3,
+                points: [
+                    [0.0, 0.0], [0.25, 0.0], [0.5, 0.0], [0.75, 0.0],
+                    [1.0, 0.0],
+                    [0.0, 0.5], [0.25, 0.5], [0.5, 0.5], [0.75, 0.5],
+                    [1.0, 0.5],
+                    [0.0, 1.0], [0.25, 1.0], [0.5, 1.0], [0.75, 1.0],
+                    [1.0, 1.0],
+                ],
+                colors: [
+                    Color(red: 0.93, green: 0.95, blue: 1.0),
+                    Color(red: 0.93, green: 0.95, blue: 1.0),
+                    Color(red: 0.92, green: 0.94, blue: 1.0),
+                    Color(red: 0.92, green: 0.94, blue: 1.0),
+                    Color(red: 0.92, green: 0.94, blue: 1.0),
+
+                    Color(red: 0.92, green: 0.94, blue: 1.0),
+                    Color(red: 0.91, green: 0.93, blue: 1.0),
+                    Color(red: 0.91, green: 0.93, blue: 1.0),
+                    Color(red: 0.90, green: 0.95, blue: 1.0),
+                    Color(red: 0.84, green: 0.93, blue: 1.0),
+
+                    Color(red: 0.92, green: 0.94, blue: 1.0),
+                    Color(red: 0.91, green: 0.93, blue: 1.0),
+                    Color(red: 0.90, green: 0.94, blue: 1.0),
+                    Color(red: 0.76, green: 0.90, blue: 1.0),
+                    Color(red: 0.62, green: 0.86, blue: 1.0),
+                ]
+            )
+            .ignoresSafeArea()
+
             VStack {
-                Spacer()
+                //Spacer()
+
                 TitleView()
                 InformationContainerView()
-                Spacer(minLength: 30)
-                Button {
-                    //let generator = UINotificationFeedbackGenerator()
-                    //generator.notificationOccurred(.success)
 
+                Spacer(minLength: 30)
+
+                Button {
                     appState.hasEnteredApp = true
                 } label: {
                     Text("Continue")
-                        .padding()
+                        .font(.title2)
+                        .fontWeight(.semibold)
+                        .frame(width: 280, height: 50)
+                        .padding(.horizontal, 20)
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(50)
                 }
-                //.padding(.horizontal)
-            }
+            }.frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
         }
-
     }
 }
 
@@ -32,13 +69,13 @@ struct TitleView: View {
             Image("gradientsIcon")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .frame(width: 180, alignment: .center)
+                .frame(width: 180)
                 .accessibility(hidden: true)
 
-            Text("Welcome to\nGhibli Movies")
+            Text("Anime Movies")
                 .font(.largeTitle)
                 .fontWeight(.bold)
-                .foregroundColor(.primary)
+                .foregroundStyle(.primary)
         }
     }
 }
