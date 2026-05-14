@@ -1,5 +1,5 @@
 {
-  "originHash" : "5fb607202c3e3603ac2b336f2e49c29e85856e057cd4ded5c6cab8a416ef419f",
+  "originHash" : "e12b3f4cedd80e1c458532044420b43c79bb53f95b931f7715676424463d93ba",
   "pins" : [
     {
       "identity" : "apollo-ios",
@@ -8,6 +8,15 @@
       "state" : {
         "revision" : "38c202227d0f09508e573dcf22f54885cfb0c5d4",
         "version" : "2.1.2"
+      }
+    },
+    {
+      "identity" : "sdwebimage#how-to-use",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage#how-to-use",
+      "state" : {
+        "revision" : "2de3a496eaf6df9a1312862adcfd54acd73c39c0",
+        "version" : "5.21.7"
       }
     }
   ],

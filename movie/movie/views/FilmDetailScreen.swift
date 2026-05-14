@@ -58,7 +58,14 @@ struct FilmDetailScreen: View {
                                 Text("Description")
                                     .font(.title2)
                                     .fontWeight(.semibold)
-                                Text(description)
+
+                                // removes all styling and also only strips html tags
+                                Text(htmlToAttributedString(description))
+                                    .fontDesign(.default)
+                                    .font(.caption)
+                                    .fontWeight(.semibold)
+                                
+                                // Text("**bold** text and _italic_ text")
 
                                 Divider().padding()
                             }

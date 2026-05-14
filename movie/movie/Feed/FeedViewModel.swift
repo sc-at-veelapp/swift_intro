@@ -1,26 +1,31 @@
 import Foundation
 import Observation
 
+@MainActor
 @Observable
-class FeedViewModel {
-    var feed: Feed = []
-    var isLoading: Bool = false
+final class FeedViewModel {
+    var videos: [Video] = []
+    var isLoading = false
     var error: String?
 
-    private let service: FeedStorage
+    private let repository: FeedRepository
 
-    init(service: FeedStorage = MockFeed()) {
-        self.service = service
+    init(repository: FeedRepository = MockFeedRepository()) {
+        self.repository = repository
     }
-    
-    func getFeed() -> Feed {
+
+    func loadFeed() async {
         isLoading = true
-        feed = service.get()
-        isLoading = false
-        return feed
-    }
+        
+        defer { isLoading = false }
 
-//    func resolveURL(feed: Feed, resolution: Resolution) async -> URL {
-//        
-//    }
+        do {
+            let feed = try await repository.fetchFeed()
+            videos = feed.feedRequest
+        } catch {
+            self.error = error.localizedDescription
+        }
+
+        isLoading = false
+    }
 }
